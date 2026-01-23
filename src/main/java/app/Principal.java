@@ -12,6 +12,7 @@ public class Principal {
     static ConexionBBDD conexionBBDD;
 
     static void main() {
+        ArrayList<Conductor> conductores = new ArrayList<>();
         driverDAO driverDAO = new driverDAO();
 
         int op =0 ;
@@ -30,6 +31,9 @@ public class Principal {
                     System.out.println("Saliendo...");
                     break;
                 case 1:
+                    System.out.println("Dime el numero de conductor a consultar.");
+                    int numConductor = sc.nextInt();
+                    conductores.add();
                     driverDAO.consultarConductor();
                     break;
                 case 2:

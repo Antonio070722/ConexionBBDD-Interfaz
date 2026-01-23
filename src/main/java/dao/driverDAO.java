@@ -11,7 +11,7 @@ public class driverDAO {
 
         String sql = "select nombre, apellidos from Driver where numeroConductor = ?";
         Conductor conductorConsultado = new Conductor();
-        try{
+        try(Connection con = ConexionBBDD.getConexion()){
             Connection con = ConexionBBDD.getConexion();
             PreparedStatement s = con.prepareStatement(sql);
 
