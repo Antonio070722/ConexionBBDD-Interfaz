@@ -79,13 +79,16 @@ public class Principal {
                     System.out.println("Introduce los apellidos del conductor: ");
                     String apellidos = sc.nextLine();
                     Conductor nuevoConductor = new Conductor(idConductor ,nombre, apellidos);
+
+                    //Declaro Conductor creado fuera del bloque try-catch para evitar errores
+                    Conductor creado = null;
+
                     try {
-                        Conductor creado = ConductoresDAO.insertarConductor(nuevoConductor);
+                        creado = ConductoresDAO.insertarConductor(nuevoConductor);
                     }catch (Exception e) {
                         System.out.println("Error al insertar el conductor: " + e.getMessage());
                         break;
                     }
-                    Conductor creado = ConductoresDAO.insertarConductor(nuevoConductor);
                     if (creado != null) {
                         System.out.println("Conductor insertado correctamente: " + creado);
                     } else {
