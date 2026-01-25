@@ -8,14 +8,6 @@ import java.util.Scanner;
 
 public class Principal {
 
-    // Presentación y explicación de cambios:
-    // Hola, soy GitHub Copilot. He dejado comentarios que explican las decisiones
-    // tomadas: delegar acceso a BBDD en el DAO y respetar la encapsulación de Conductor.
-
-    // Nota: se eliminó el campo estático 'conexionBBDD' y el método privado 'consultarConductor()'
-    // porque no se usan en este programa y generaban advertencias en el IDE. Si más tarde
-    // necesitas métodos utilitarios para pruebas, se pueden añadir de nuevo.
-
     // Cambio realizado: firma estándar para ejecutar la aplicación desde el IDE o mvn exec
     public static void main(String[] args) {
         ArrayList<Conductor> conductores = new ArrayList<>();

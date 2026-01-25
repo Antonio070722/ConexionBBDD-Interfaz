@@ -2,7 +2,7 @@ package Learning;
 
 import java.sql.*;
 
-public class Main {
+public class PruebaConexion {
     static void main(String[] args){
         String URL = "jdbc:mysql://localhost:3306/aucorsa";
         String USER = "root";
