@@ -1,5 +1,6 @@
 package app;
 
+import dao.BusesDAO;
 import dao.ConductoresDAO;
 import model.Conductor;
 
@@ -72,7 +73,7 @@ public class Principal {
                     String apellidos = sc.nextLine();
                     Conductor nuevoConductor = new Conductor(idConductor ,nombre, apellidos);
 
-                    //Declaro Conductor creado fuera del bloque try-catch para evitar errores
+                    //Declaro Conductor 'creado' fuera del bloque try-catch para evitar errores
                     Conductor creado = null;
                     try {
                         creado = ConductoresDAO.insertarConductor(nuevoConductor);
@@ -88,6 +89,26 @@ public class Principal {
 
                     break;
                 case 3:
+                    System.out.println("Introduce el número de conductor a eliminar: ");
+                    if (!sc.hasNextInt()) {
+                        System.out.println("Introduce un número de conductor válido.");
+                        sc.next();
+                        break;
+                    }
+
+                    int idConductorBorrar = sc.nextInt();
+
+                    boolean borrado=false;
+                    try {
+                        borrado = ConductoresDAO.borrarConductor(idConductorBorrar);
+                    } catch (Exception e) {
+                        System.out.println("Error: Conductor no borrado: "+ e.getMessage());
+                    }
+                    if (borrado){
+                        System.out.println("Conductor borrado correctamente.");
+                    } else {
+                        System.out.println("CONDUCTOR NO ELIMINADO: no se ha encontrado un conductor con el ID: "+idConductorBorrar);
+                    }
 
                     break;
                 default:

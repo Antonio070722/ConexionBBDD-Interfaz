@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.*;
 
 public class BusesDAO {
+
     public Bus consultarBus(int registro){
         String sql = "SELECT Registro, Licencia, Tipo FROM BUSES WHERE Registro = ?";
 

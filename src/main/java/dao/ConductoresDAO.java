@@ -6,6 +6,25 @@ import model.Conductor;
 import java.sql.*;
 
 public class ConductoresDAO {
+
+    public static boolean borrarConductor(int idConductorBorrar) {
+        String sql = "DELETE FROM CONDUCTORES WHERE numeroConductor = ?";
+
+        try(Connection con = ConexionBBDD.getConexion();
+            PreparedStatement ps = con.prepareStatement(sql)){
+
+            ps.setInt(1, idConductorBorrar);
+
+            int filasElim = ps.executeUpdate();
+
+            if (filasElim > 0) return true;
+
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
     public Conductor consultarConductor(int numDriver){
 
         // Cambio realizado: Se implementa correctamente la consulta parametrizada
