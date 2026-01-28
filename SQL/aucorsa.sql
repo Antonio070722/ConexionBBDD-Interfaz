@@ -1,3 +1,4 @@
+--Cambio para hacer pull en intellij tras un rebase
 CREATE DATABASE AUCORSA;
 USE AUCORSA;
 
