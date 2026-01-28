@@ -34,6 +34,16 @@ CREATE TABLE BUSES(
 
 ALTER TABLE BUSES
     MODIFY Registro VARCHAR(10);
+    
+    SELECT * FROM BUSES;
+    
+--ALTER TABLE para renombrar las columnas mal nombradas
+-- 1. Renombrar 'Licencia' a un nombre temporal (ej: 'col_temp')
+ALTER TABLE BUSES CHANGE Licencia col_temp VARCHAR(20);
+-- 2. Renombrar 'Tipo' a 'Licencia'
+ALTER TABLE BUSES CHANGE Tipo Licencia VARCHAR(20);
+-- 3. Renombrar el temporal ('col_temp') a 'Tipo'
+ALTER TABLE BUSES CHANGE col_temp Tipo VARCHAR(20);
 
 CREATE TABLE BDP(
     Registro VARCHAR(10),
@@ -48,39 +58,39 @@ CREATE TABLE BDP(
 
 --Inserar datos de los autobuses
 INSERT INTO BUSES VALUES
-                      ('B001', 'Urbano', 'LIC001'),
-                      ('B002', 'Interurbano', 'LIC002'),
-                      ('B003', 'Tursmo', 'LIC003'),
-                      ('B004', 'Escolar', 'LIC004'),
-                      ('B005', 'Urbano', 'LIC005'),
-                      ('B006', 'Turismo', 'LIC006');
+('B001', 'Urbano', 'LIC001'),
+('B002', 'Interurbano', 'LIC002'),
+('B003', 'Tursmo', 'LIC003'),
+('B004', 'Escolar', 'LIC004'),
+('B005', 'Urbano', 'LIC005'),
+('B006', 'Turismo', 'LIC006');
 
 --Insertar datos de los conductores
 INSERT INTO CONDUCTORES VALUES
-                            (101, 'Carlos', 'García'),
-                            (102, 'Lucía', 'Perez'),
-                            (103, 'Manuel', 'Martín'),
-                            (104, 'Laura', 'López'),
-                            (105, 'Javier', 'Sánchez'),
-                            (106, 'Marta', 'Fernández');
+(101, 'Carlos', 'García'),
+(102, 'Lucía', 'Perez'),
+(103, 'Manuel', 'Martín'),
+(104, 'Laura', 'López'),
+(105, 'Javier', 'Sánchez'),
+(106, 'Marta', 'Fernández');
 
 --Insertas lugares
 INSERT INTO LUGARES VALUES
-                        (1, '14001', 'Córdoba', 'Centro'),
-                        (2, '28013', 'Madrid', 'Sol'),
-                        (3, '41001', 'Sevilla', 'Triana'),
-                        (4, '08001', 'Barcelona', 'Gótico'),
-                        (5, '46001', 'Valencia', 'Carmen'),
-                        (6, '29001', 'Málaga', 'Soho');
+(1, '14001', 'Córdoba', 'Centro'),
+(2, '28013', 'Madrid', 'Sol'),
+(3, '41001', 'Sevilla', 'Triana'),
+(4, '08001', 'Barcelona', 'Gótico'),
+(5, '46001', 'Valencia', 'Carmen'),
+(6, '29001', 'Málaga', 'Soho');
 
 --Insertar datos en la relación BDP
 INSERT INTO BDP VALUES
-                    ('B001', 101, 1, 'Lunes'),
-                    ('B002', 102, 2, 'Martes'),
-                    ('B003', 103, 3, 'Miércoles'),
-                    ('B004', 104, 4, 'Jueves'),
-                    ('B005', 105, 5, 'Viernes'),
-                    ('B006', 106, 6, 'Lunes');
+('B001', 101, 1, 'Lunes'),
+('B002', 102, 2, 'Martes'),
+('B003', 103, 3, 'Miércoles'),
+('B004', 104, 4, 'Jueves'),
+('B005', 105, 5, 'Viernes'),
+('B006', 106, 6, 'Lunes');
 
 SELECT * FROM CONDUCTORES;
 
