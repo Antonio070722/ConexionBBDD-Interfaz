@@ -1,21 +1,21 @@
 package model;
 
 public class Bus {
-    private int Registro;
+    private String Registro;
     private String Licencia;
     private String Tipo;
 
-    public Bus(int registro, String licencia, String tipo) {
+    public Bus(String registro, String licencia, String tipo) {
         Registro = registro;
         Licencia = licencia;
         Tipo = tipo;
     }
 
-    public int getRegistro() {
+    public String getRegistro() {
         return Registro;
     }
 
-    public void setRegistro(int registro) {
+    public void setRegistro(String registro) {
         Registro = registro;
     }
 

@@ -2,6 +2,7 @@ package app;
 
 import dao.BusesDAO;
 import dao.ConductoresDAO;
+import model.Bus;
 import model.Conductor;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ public class Principal {
     // Cambio realizado: firma estándar para ejecutar la aplicación desde el IDE o mvn exec
     public static void main(String[] args) {
         ArrayList<Conductor> conductores = new ArrayList<>();
+        ArrayList<Bus> buses = new ArrayList<>();
         ConductoresDAO driverDAO = new ConductoresDAO();
 
         int op = 0;
@@ -22,7 +24,8 @@ public class Principal {
             System.out.println("\t0. Salir.");
             System.out.println("\t1. Consultar conductores.");
             System.out.println("\t2. Insertar conductores.");
-            System.out.println("\t3. Borrar conductor.");
+            System.out.println("\t3. Eliminar conductor.");
+            System.out.println("\t4. Consultar autobus.");
 
             // Cambio realizado: validamos que el usuario introduzca un entero
             if (!sc.hasNextInt()) {
@@ -108,6 +111,21 @@ public class Principal {
                         System.out.println("Conductor borrado correctamente.");
                     } else {
                         System.out.println("CONDUCTOR NO ELIMINADO: no se ha encontrado un conductor con el ID: "+idConductorBorrar);
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("Introduce el número de registro");
+                    String registroBus = sc.nextLine();
+                    sc.next();
+
+                    Bus bus = BusesDAO.consultarBus(registroBus);
+
+                    if (bus != null) {
+                        buses.add(bus);
+                        System.out.println("Autobus encontrado: "+bus);
+                    }else {
+                        System.out.println("No se encontrado un autobus con el número de registro" + registroBus);
                     }
 
                     break;
