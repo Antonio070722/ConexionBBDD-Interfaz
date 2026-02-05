@@ -9,6 +9,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class LugaresDAO {
+    /**
+     * Consulta un lugar por su ID de lugar. Si el lugar existe, devuelve un objeto Lugar con los datos correspondientes. Si no existe, devuelve null.
+     * @param idLugar ID del lugar a consultar
+     * @return
+     * @throws SQLException si ocurre un error al acceder a la base de datos
+     */
     public Lugar consultarLugar(int idLugar) throws SQLException {
         // Implementación del método para consultar un lugar por su ID
         String sql = "SELECT IdLugar, site, cp, ciudad FROM LUGARES WHERE IdLugar = ?";
@@ -41,6 +47,12 @@ public class LugaresDAO {
 
     }
 
+    /**
+     * Inserta un nuevo lugar en la base de datos. Si la inserción es exitosa, devuelve el objeto Lugar insertado.
+     * Si ocurre un error durante la inserción, lanza una RuntimeException con el mensaje de error.
+     * @param lugarinsert
+     * @return
+     */
     public static Lugar insertarLugar(Lugar lugarinsert){
         String sql = "INSERT INTO LUGARES (IdLugar, cp, ciudad, site) VALUES (?,?,?,?)";
 
@@ -63,6 +75,13 @@ public class LugaresDAO {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Elimina un lugar de la base de datos utilizando su ID. Si la eliminación es exitosa, devuelve true.
+     * Si no se encuentra el lugar o ocurre un error durante la eliminación, devuelve false.
+     * @param idLugar ID del lugar a eliminar
+     * @return
+     */
     public static boolean borrarLugar(int idLugar){
         String sql = "DELETE FROM LUGARES WHERE IdLugar = ?";
 
