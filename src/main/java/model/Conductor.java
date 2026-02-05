@@ -1,13 +1,19 @@
 package model;
 
 public class Conductor {
-    // He cambiado los atributos a private para seguir la encapsulación básica en Java
-    // (has pedido un cambio sencillo, sin añadidos complejos como JavaDoc o políticas de reintentos).
+    /**
+     * Objeto Conductor, que contiene el número del conductor, el nombre y los apellidos.
+     */
     private int numeroConductor;
     private String nombre;
     private String apellidos;
 
-    // Constructor público: sigue igual en uso, ahora asigna valores a los atributos privados.
+    /**
+     * Constructor de la clase Conductor, que recibe el número del conductor, el nombre y los apellidos.
+     * @param numeroConductor
+     * @param nombre
+     * @param apellido
+     */
     public Conductor(int numeroConductor ,String nombre, String apellido) {
         this.nombre = nombre;
         this.apellidos = apellido;
@@ -17,7 +23,10 @@ public class Conductor {
     //Constructor vacio
     public Conductor() {}
 
-    // Getters y setters: permanecen para permitir el acceso y la modificación de los atributos privados.
+    /**
+     * Getters y setters para cada uno de los atributos de la clase Conductor.
+     * @return
+     */
     public String getNombre() {
         return nombre;
     }
@@ -42,14 +51,14 @@ public class Conductor {
         this.numeroConductor = numeroConductor;
     }
 
+    /**
+     * Método toString para mostrar la información de la clase BDP de forma estructurada.
+     * @return
+     */
     @Override
     public String toString() {
         return "\n\tNumeroConductor: " + numeroConductor +
                 "\n\tNombre: " + nombre +
                 "\n\tApellidos: " + apellidos;
     }
-
-    // Comentario final: cambios realizados:
-    // - Atributos cambiados a private para encapsulación..
-    // - Getters y setters mantenidos para que otras partes del proyecto sigan funcionando.
 }
