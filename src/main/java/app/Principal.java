@@ -38,6 +38,7 @@ public class Principal {
             System.out.println("\t9. Insertar ruta.");
             System.out.println("\t10. Eliminar ruta.");
             System.out.println("\t11. Consultar día de la semana de una ruta a partir de la ciudad");
+            System.out.println("\t12. Actualizar ruta según el día de la semana.");
 
             System.out.print("Introduce tu opción: ");
             // Cambio realizado: validamos que el usuario introduzca un entero
@@ -339,8 +340,82 @@ public class Principal {
                     break;
 
                 case 11:
-                    System.out.println("Introduce ");
+                    System.out.println("Introduce la ciudad para consultar el día de la semana de una ruta: ");
+                    sc.nextLine();
+                    String ciudadConsultarDiaRuta = sc.nextLine();
+                    String diaSemanaPorCiudadEnRuta = "";
+                    try {
+                        diaSemanaPorCiudadEnRuta = BDPDAO.consultarDiaSemanaPorCiudad(ciudadConsultarDiaRuta);
+                    }catch (Exception e){
+                        System.out.println("Error al consultar el día de la semana de la ruta: " + e.getMessage());
+                        break;
+                    }
+                    if (diaSemanaPorCiudadEnRuta != null){
+                        System.out.println("El día de la semana de la ruta que pasa por la ciudad "+ciudadConsultarDiaRuta+" es: "+diaSemanaPorCiudadEnRuta);
+                    } else {
+                        System.out.println("No se ha encontrado una ruta que pase por la ciudad: "+ciudadConsultarDiaRuta);
+                    }
                 break;
+
+                case 12:
+                    System.out.println("Introduce el día de la semana asociado para actualizar la ruta: ");
+                    sc.nextLine();
+                    String diaSemanaActualizarRuta = sc.nextLine();
+
+                    System.out.println("Introduce el dato que deseas actualizar, introduce exactamente una de estas opciones: Registro de autobus, número de conductor o ID del lugar");
+                    String datoActualizar = sc.nextLine();
+                    switch (datoActualizar){
+                        case "Registro de autobus":
+                            boolean modificadoRegistro = false;
+                            System.out.println("Introduce el nuevo registro de autobus para la ruta a actualizar: ");
+                            String nuevoRegistro = sc.nextLine();
+                            try {
+                                modificadoRegistro = BDPDAO.modificarRegistroBDP(diaSemanaActualizarRuta, nuevoRegistro);
+                            } catch (Exception e) {
+                                System.out.println("Error al modificar el registro del autobus en la ruta: " + e.getMessage());
+                            }
+                            if (modificadoRegistro){
+                                System.out.println("Registro del autobus modificado correctamente en la ruta.");
+                            } else {
+                                System.out.println("Error al modificar el registro del autobus en la ruta.");
+                            }
+                            break;
+                        case "Número de conductor":
+                            boolean modificadoNumConductor = false;
+                            System.out.println("Introduce el nuevo número de conductor para la ruta a actualizar: ");
+                            int nuevoNumConductor = sc.nextInt();
+                            try {
+                                modificadoNumConductor = BDPDAO.modificarNumConductorBDP(diaSemanaActualizarRuta, nuevoNumConductor);
+                            } catch (Exception e) {
+                                System.out.println("Error al modificar el número de conductor en la ruta: " + e.getMessage());
+                            }
+                            if (modificadoNumConductor){
+                                System.out.println("Número de conductor modificado correctamente en la ruta.");
+                            } else {
+                                System.out.println("Error al modificar el número de conductor en la ruta.");
+                            }
+                            break;
+                        case "ID del lugar":
+                            boolean modificadoIdLugar = false;
+                            System.out.println("Introduce el nuevo ID de lugar para la ruta a actualizar: ");
+                            int nuevoIdLugar = sc.nextInt();
+                            try {
+                                modificadoIdLugar = BDPDAO.modificarIdLugarBDP(diaSemanaActualizarRuta, nuevoIdLugar);
+                            } catch (Exception e) {
+                                System.out.println("Error al modificar el ID de lugar en la ruta: " + e.getMessage());
+                            }
+                            if (modificadoIdLugar){
+                                System.out.println("ID de lugar modificado correctamente en la ruta.");
+                            } else {
+                                System.out.println("Error al modificar el ID de lugar en la ruta.");
+                            }
+                            break;
+                        default:
+                            System.out.println("Introduce una opción válida para el dato a actualizar.");
+                            break;
+                    }
+
+                    break;
 
                 default:
                     System.out.println("Introduce una opción válida.");
