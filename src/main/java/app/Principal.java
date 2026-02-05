@@ -8,7 +8,6 @@ import model.BDP;
 import model.Bus;
 import model.Conductor;
 import model.Lugar;
-import view.DriverView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -21,6 +20,10 @@ public class Principal {
         ArrayList<Bus> buses = new ArrayList<>();
         ConductoresDAO driverDAO = new ConductoresDAO();
 
+        /**
+         * Menú de acciones del sistema aucorsa, con opciones para insertar, consultar, eliminar y actualizar conductores
+         * autobuses, lugares y rutas.
+         */
         int op = 0;
         Scanner sc = new Scanner(System.in);
         System.out.println("----Bienvenido al sistema de AUCORSA----");
@@ -41,10 +44,10 @@ public class Principal {
             System.out.println("\t12. Actualizar ruta según el día de la semana.");
 
             System.out.print("Introduce tu opción: ");
-            // Cambio realizado: validamos que el usuario introduzca un entero
+            //Validamos que el usuario introduzca un entero
             if (!sc.hasNextInt()) {
                 System.out.println("Introduce una opción válida (número).");
-                sc.next(); // descartamos el token inválido
+                sc.next(); // descartamos la entrada inválido
                 continue;
             }
             op = sc.nextInt();
@@ -54,7 +57,6 @@ public class Principal {
                     break;
                 case 1:
                     System.out.println("Introduce el numero de conductor a consultar.");
-                    // Cambio realizado: validamos la entrada antes de leer
                     if (!sc.hasNextInt()) {
                         System.out.println("Introduce un número de conductor válido.");
                         sc.next();
@@ -62,11 +64,11 @@ public class Principal {
                     }
                     int numConductor = sc.nextInt();
 
-                    // Cambio realizado: llamamos al DAO pasando el id y recogemos el resultado
+                    // Llamamos al DAO pasando el id y recogemos el resultado en un objeto Conductor
                     Conductor c = driverDAO.consultarConductor(numConductor);
 
                     if (c != null) {
-                        // Cambio realizado: añadimos el objeto Conductor a la lista correctamente
+                        //Añadimos el objeto Conductor a la lista correctamente
                         conductores.add(c);
                         System.out.println("Conductor encontrado: " + c);
                     } else {
@@ -75,37 +77,45 @@ public class Principal {
                     break;
                 case 2:
                     System.out.println("Introduce primero el número de conductor a insertar: ");
+                    //Validación de que se introduzca un número entero para el ID del conductor
                     if (!sc.hasNextInt()) {
                         System.out.println("Introduce un número de conductor válido.");
                         sc.next();
                         break;
                     }
                     int idConductor = sc.nextInt();
-                    //Añadido sc.nextLine() para que no salte el siguiente input
+                    //Añadido sc.nextLine() para que no salte el siguiente input y no deje introducir datos
                     sc.nextLine();
                     System.out.println("Introduce el nombre del conductor: ");
                     String nombre = sc.nextLine();
                     System.out.println("Introduce los apellidos del conductor: ");
                     String apellidos = sc.nextLine();
+                    //Creamos un nuevo objeto Conductor con los datos del conductor a insertar para pasarselo al método del DAO
                     Conductor nuevoConductor = new Conductor(idConductor ,nombre, apellidos);
 
                     //Declaro Conductor 'creado' fuera del bloque try-catch para evitar errores
                     Conductor creado = null;
                     try {
+                        //Llamamos al método del DAO para insertar el nuevo conductor y recogemos el resultado en un objeto Conductor
                         creado = ConductoresDAO.insertarConductor(nuevoConductor);
                     }catch (Exception e) {
+                        //Aquí entra en caso de que se produzca una excepción al isertar el conductor
                         System.out.println("Error al insertar el conductor: " + e.getMessage());
                         break;
                     }
                     if (creado != null) {
+                        //Aquí entra cuando el método del DAO ha insertado correctamente el conductor y ha devuelto el objeto Conductor creado
                         System.out.println("Conductor insertado correctamente: " + creado);
                     } else {
+                        //Cuando el método del DAO no ha insertado el conductor y ha devuelto null, se muestra este mensaje
                         System.out.println("Error al insertar el conductor.");
                     }
 
                     break;
+
                 case 3:
                     System.out.println("Introduce el número de conductor a eliminar: ");
+                    //Validación
                     if (!sc.hasNextInt()) {
                         System.out.println("Introduce un número de conductor válido.");
                         sc.next();
@@ -116,10 +126,12 @@ public class Principal {
 
                     boolean borrado=false;
                     try {
+                        //El método del DAO devuelve true o false y lo almaceno en borrado
                         borrado = ConductoresDAO.borrarConductor(idConductorBorrar);
                     } catch (Exception e) {
                         System.out.println("Error: Conductor no borrado: "+ e.getMessage());
                     }
+                    //Si borrado es true se muestra el mensaje de conductor borrado correctamente, si es false se muestra el mensaje de conductor no eliminado
                     if (borrado){
                         System.out.println("Conductor borrado correctamente.");
                     } else {
@@ -132,6 +144,8 @@ public class Principal {
                     String registroBus = sc.nextLine();
                     registroBus =sc.next();
 
+                    //El método del DAO devuelve un objeto Conductor con la información del conductor del bus con el
+                    //registro introducido, o null si no se encuentra ningún bus con ese registro o si el bus no tiene conductor asignado
                     Conductor infoConductorBus = BusesDAO.consultarConductorBus(registroBus);
 
                     if (infoConductorBus != null) {
@@ -149,6 +163,7 @@ public class Principal {
 
                     String tipoNewBus = "";
                     boolean tipovalido=false;
+                    //Con este bucle se valida que el tipo de autobus introducido sea uno de los tipos válidos
                     do {
                         System.out.println("Introduce un tipo de autobus válido (Urbano, Interurbano, Turismo o Escolar): ");
                         tipoNewBus = sc.nextLine();
@@ -165,6 +180,7 @@ public class Principal {
 
                     Bus nuevosBusInsert = new Bus(registroNewBus, tipoNewBus, licenciaNewBus);
 
+                        //Si el método del DAO inserta correctamente el autobus, devuelve el objeto Bus insertado con sus datos, si no lo inserta devuelve null
                         Bus busInsertado = null;
                         try{
                             busInsertado = BusesDAO.insertarBus(nuevosBusInsert);
@@ -184,7 +200,7 @@ public class Principal {
                     sc.nextLine();
                     System.out.println("Introduce el número de registro del autobus a eliminar: ");
                     String registroBusBorrar = sc.nextLine();
-
+                    //El método del DAO devuelve true o false si ha sido borrado o no y lo almaceno en busBorrado
                     boolean busBorrado = false;
                     try {
                         busBorrado = BusesDAO.borrarBus(registroBusBorrar);
@@ -192,6 +208,7 @@ public class Principal {
                         System.out.println("Error: Autobus no borrado: "+ e.getMessage());
                     }
 
+                    //Si busBorrado es true se muestra el mensaje de autobus borrado correctamente, si es false se muestra el mensaje de autobus no eliminado
                     if (busBorrado) {
                         System.out.println("Autobus borrado correctamente.");
                     } else {
@@ -202,6 +219,7 @@ public class Principal {
 
                 case 7:
                     System.out.print("Introduce ID del lugar a insertar: ");
+                    //Validación
                     if (!sc.hasNextInt()){
                         System.out.println("Introduce un número de lugar válido.");
                         sc.next();
@@ -215,7 +233,7 @@ public class Principal {
                         sc.next();
                         break;
                     }
-                    sc.nextLine();
+                    sc.nextLine();// Añadido para evitar que el siguiente input se salte
                     String cpLugar = sc.nextLine();
 
                     System.out.print("\nIntroduce el nombre de la ciudad correspondiente al lugar a insertar: ");
@@ -224,10 +242,11 @@ public class Principal {
                     System.out.print("\nIntroduce el sitio del lugar a insertar: ");
                     String siteLugar = sc.nextLine();
 
+                    //Nuevo objeto Lugar con los datos introducidos para pasarselo al método del DAO para insertar el lugar
                     Lugar lugarInsert = new Lugar(idLugar, cpLugar, ciudadLugar, siteLugar);
-
                     Lugar lugarInsertado = null;
 
+                    //Si el método del DAO inserta correctamente el lugar, devuelve el objeto Lugar insertado con sus datos, si no lo inserta devuelve null
                     try{
                         lugarInsertado = LugaresDAO.insertarLugar(lugarInsert);
                     } catch (Exception e) {
@@ -242,11 +261,13 @@ public class Principal {
                     break;
                 case 8:
                     System.out.println("Introduce el ID del lugar a eliminar: ");
+                    //Validación
                     if (!sc.hasNextInt()){
                         System.out.println("Introduce un número de lugar válido.");
                         sc.next();
                         break;
                     }
+                    //El método del DAO devuelve true o false si ha sido borrado o no y lo almaceno en lugarBorrado
                     int idLugarABorrar=sc.nextInt();
                     boolean lugarBorrado = false;
                     try {
@@ -267,6 +288,7 @@ public class Principal {
                     String registroRuta = sc.nextLine();
 
                     System.out.println("Introduce el número de conductor para la ruta a insertar: ");
+                    //Validación
                     if (!sc.hasNextInt()){
                         System.out.println("Introduce un número de conductor válido.");
                         sc.next();
@@ -275,6 +297,7 @@ public class Principal {
                     int numConductorRuta = sc.nextInt();
 
                     System.out.println("Introduce el ID del lugar para la ruta a insertar: ");
+                    //Validación
                     if (!sc.hasNextInt()){
                         System.out.println("Introduce un número de lugar válido.");
                         sc.next();
@@ -285,7 +308,7 @@ public class Principal {
                     System.out.println("Introduce el día de la semana para la ruta a insertar: ");
                     sc.nextLine();
                     String diaSemanaRuta = sc.nextLine();
-
+                    //Nuevo objeto  BDP con los datos introducidos para pasarselo al método del DAO para insertar la ruta
                     BDP rutaInsertar = new BDP(registroRuta, numConductorRuta, idLugarRuta, diaSemanaRuta);
 
                     try{
@@ -294,7 +317,7 @@ public class Principal {
                         System.out.println("Error al insertar la ruta: " + e.getMessage());
                         break;
                     }
-
+                    //Si el método del DAO inserta correctamente la ruta, devuelve el objeto BDP insertado con sus datos, si no lo inserta devuelve null
                     if (rutaInsertar != null){
                         System.out.println("Ruta insertada correctamente: "+rutaInsertar);
                     } else {
@@ -305,6 +328,7 @@ public class Principal {
 
                 case 10:
                     System.out.println("Introduce el número de conductor de la ruta a eliminar: ");
+                    //Validación
                     if (!sc.hasNextInt()){
                         System.out.println("Introduce un número de conductor válido.");
                         sc.next();
@@ -313,6 +337,7 @@ public class Principal {
                     int numConductorRutaBorrar = sc.nextInt();
 
                     System.out.println("Introduce el ID del lugar de la ruta a eliminar: ");
+                    //Validación
                     if(!sc.hasNextInt()){
                         System.out.println("Introduce un número de lugar válido.");
                         sc.next();
@@ -323,14 +348,14 @@ public class Principal {
                     System.out.println("Introduce el registro del autobus que recorre la ruta a eliminar: ");
                     sc.nextLine();
                     String registroRutaBorrar = sc.nextLine();
-
+                    //El método del DAO devuelve true o false si ha sido borrada o no y lo almaceno en rutaBorrada
                     boolean rutaBorrada = false;
                     try{
                         rutaBorrada = BDPDAO.borrarRuta(numConductorRutaBorrar, idLugarRutaBorrar, registroRutaBorrar);
                     } catch (Exception e) {
                         System.out.println("Error al borrar la ruta: " + e.getMessage());
                     }
-
+                    //Si rutaBorrada es true se muestra el mensaje de ruta borrada correctamente, si es false se muestra el mensaje de ruta no eliminada
                     if (rutaBorrada){
                         System.out.println("Ruta borrada correctamente.");
                     } else {
@@ -344,6 +369,8 @@ public class Principal {
                     sc.nextLine();
                     String ciudadConsultarDiaRuta = sc.nextLine();
                     String diaSemanaPorCiudadEnRuta = "";
+                    //Almaceno en diaSemanaPorCiudadEnRuta el resultado del método del DAO, que devuelve el día de la
+                    //semana de la ruta que pasa por la ciudad introducida, o null si no se encuentra ninguna ruta que pase por esa ciudad
                     try {
                         diaSemanaPorCiudadEnRuta = BDPDAO.consultarDiaSemanaPorCiudad(ciudadConsultarDiaRuta);
                     }catch (Exception e){
@@ -364,6 +391,12 @@ public class Principal {
 
                     System.out.println("Introduce el dato que deseas actualizar, introduce exactamente una de estas opciones: Registro de autobus, número de conductor o ID del lugar");
                     String datoActualizar = sc.nextLine();
+                    /**
+                     * Con este switch se actualiza el dato de la ruta que el usuario ha elegido, llamando al método del DAO
+                     * correspondiente a cada dato. Si el método del DAO devuelve true se muestra el mensaje de dato modificado
+                     * correctamente, si devuelve false se muestra el mensaje de error al modificar el dato en la ruta.
+                     * Si el usuario introduce una opción no válida para el dato a actualizar, se muestra un mensaje de opción no válida
+                     */
                     switch (datoActualizar){
                         case "Registro de autobus":
                             boolean modificadoRegistro = false;
