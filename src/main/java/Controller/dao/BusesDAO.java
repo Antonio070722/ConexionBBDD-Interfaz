@@ -8,7 +8,12 @@ import java.sql.Connection;
 import java.sql.*;
 
 public class BusesDAO {
-
+    /**
+     * Consulta el conductor asignado a un bus específico utilizando su registro. El método devuelve un nuevo objeto
+     * Conductor con los datos del conductor asignado al bus. Si no se encuentra el bus o no tiene un conductor asignado, devuelve null.
+     * @param registro El registro del bus para el cual se desea consultar el conductor asignado.
+     * @return
+     */
     public static Conductor consultarConductorBus(String registro){
         String sql = "SELECT c.numeroConductor, c.nombre, c.apellidos FROM BDP b JOIN CONDUCTORES c ON b.numConductor = c.numeroConductor WHERE b.Registro = ?;";
 
@@ -35,6 +40,12 @@ public class BusesDAO {
         }
     }
 
+    /**
+     * Inserta un nuevo bus en la base de datos utilizando los datos proporcionados en el objeto businsert, si
+     * la inserción es exitosa, devuelve un nuevo objeto Bus con los datos del bus insertado. Si la inserción falla, devuelve null.
+     * @param businsert El objeto Bus que contiene los datos del bus a insertar en la base de datos, incluyendo el registro, tipo y licencia.
+     * @return
+     */
     public static Bus insertarBus(Bus businsert){
         String sql = "INSERT INTO BUSES (Registro, Tipo, Licencia) VALUES (?,?,?)";
         try(Connection con  = ConexionBBDD.getConexion();
@@ -58,6 +69,12 @@ public class BusesDAO {
         }
     }
 
+    /**
+     * Elimina un bus de la base de datos utilizando su registro como identificador. El método devuelve true si el bus se
+     * eliminó correctamente, o false si no se encontró el bus o si ocurrió un error durante la eliminación.
+     * @param registro El registro del bus que se desea eliminar de la base de datos.
+     * @return
+     */
     public static boolean borrarBus(String registro){
         String sql = "DELETE FROM BUSES WHERE Registro = ?";
 
