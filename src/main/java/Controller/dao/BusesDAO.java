@@ -2,14 +2,15 @@ package Controller.dao;
 
 import Controller.DB.ConexionBBDD;
 import model.Bus;
+import model.Conductor;
 
 import java.sql.Connection;
 import java.sql.*;
 
 public class BusesDAO {
 
-    public static Bus consultarBus(String registro){
-        String sql = "SELECT Registro, Licencia, Tipo FROM BUSES WHERE Registro = ?";
+    public static Conductor consultarConductorBus(String registro){
+        String sql = "SELECT c.numeroConductor, c.nombre, c.apellidos FROM BDP b JOIN CONDUCTORES c ON b.numConductor = c.numeroConductor WHERE b.Registro = ?;";
 
         try(Connection con = ConexionBBDD.getConexion();
         PreparedStatement ps = con.prepareStatement(sql)){
@@ -18,10 +19,10 @@ public class BusesDAO {
 
             try(ResultSet rs = ps.executeQuery()){
                 if(rs.next()){
-                    String Registro = rs.getString("Registro");
-                    String Licencia = rs.getString("Licencia");
-                    String Tipo = rs.getString("Tipo");
-                    return new Bus(Registro, Licencia, Tipo);
+                    int numeroConductor = rs.getInt("numeroConductor");
+                    String nombre = rs.getString("nombre");
+                    String apellidos = rs.getString("apellidos");
+                    return new Conductor(numeroConductor, nombre, apellidos);
                 }else {
                     return null; // No se encontró el bus
                 }

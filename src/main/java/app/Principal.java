@@ -1,9 +1,13 @@
 package app;
 
+import Controller.dao.BDPDAO;
 import Controller.dao.BusesDAO;
 import Controller.dao.ConductoresDAO;
+import Controller.dao.LugaresDAO;
+import model.BDP;
 import model.Bus;
 import model.Conductor;
+import model.Lugar;
 import view.DriverView;
 
 import java.util.ArrayList;
@@ -23,12 +27,17 @@ public class Principal {
         do {
             System.out.println("¿Qué desea hacer?");
             System.out.println("\t0. Salir.");
-            System.out.println("\t1. Consultar conductores.");
+            System.out.println("\t1. Consultar conductor a partir de nº de conductor.");
             System.out.println("\t2. Insertar conductores.");
             System.out.println("\t3. Eliminar conductor.");
-            System.out.println("\t4. Consultar autobus.");
+            System.out.println("\t4. Consultar conductores de un autobus a partir del nº de registro de autobus.");
             System.out.println("\t5. Insertar autobus.");
             System.out.println("\t6. Eliminar autobus.");
+            System.out.println("\t7. Insertar lugar.");
+            System.out.println("\t8. Eliminar lugar.");
+            System.out.println("\t9. Insertar ruta.");
+            System.out.println("\t10. Eliminar ruta.");
+            System.out.println("\t11. Consultar día de la semana de una ruta a partir de la ciudad");
 
             System.out.print("Introduce tu opción: ");
             // Cambio realizado: validamos que el usuario introduzca un entero
@@ -122,13 +131,12 @@ public class Principal {
                     String registroBus = sc.nextLine();
                     registroBus =sc.next();
 
-                    Bus bus = BusesDAO.consultarBus(registroBus);
+                    Conductor infoConductorBus = BusesDAO.consultarConductorBus(registroBus);
 
-                    if (bus != null) {
-                        buses.add(bus);
-                        System.out.println("Autobus encontrado: "+bus);
+                    if (infoConductorBus != null) {
+                        System.out.println("Conductor de este bus encontrado: "+infoConductorBus);
                     }else {
-                        System.out.println("No se encontrado un autobus con el número de registro " + registroBus);
+                        System.out.println("No se encontrado un conductor del autobus con registro: " + registroBus);
                     }
 
                     break;
@@ -190,27 +198,155 @@ public class Principal {
                     }
 
                     break;
+
+                case 7:
+                    System.out.print("Introduce ID del lugar a insertar: ");
+                    if (!sc.hasNextInt()){
+                        System.out.println("Introduce un número de lugar válido.");
+                        sc.next();
+                        break;
+                    }
+                    int idLugar = sc.nextInt();
+
+                    System.out.print("\nIntroduce el código postal del lugar a insertar: ");
+                    if (!sc.hasNextInt()){
+                        System.out.println("Introduce un código postal válido.");
+                        sc.next();
+                        break;
+                    }
+                    sc.nextLine();
+                    String cpLugar = sc.nextLine();
+
+                    System.out.print("\nIntroduce el nombre de la ciudad correspondiente al lugar a insertar: ");
+                    String ciudadLugar = sc.nextLine();
+
+                    System.out.print("\nIntroduce el sitio del lugar a insertar: ");
+                    String siteLugar = sc.nextLine();
+
+                    Lugar lugarInsert = new Lugar(idLugar, cpLugar, ciudadLugar, siteLugar);
+
+                    Lugar lugarInsertado = null;
+
+                    try{
+                        lugarInsertado = LugaresDAO.insertarLugar(lugarInsert);
+                    } catch (Exception e) {
+                        System.out.println("Error al insertar el lugar: " + e.getMessage());
+                        break;
+                    }
+                        if (lugarInsertado != null) {
+                            System.out.println("Lugar insertado correctamente: "+lugarInsertado);
+                        }else {
+                            System.out.println("Error al insertar el lugar.");
+                        }
+                    break;
+                case 8:
+                    System.out.println("Introduce el ID del lugar a eliminar: ");
+                    if (!sc.hasNextInt()){
+                        System.out.println("Introduce un número de lugar válido.");
+                        sc.next();
+                        break;
+                    }
+                    int idLugarABorrar=sc.nextInt();
+                    boolean lugarBorrado = false;
+                    try {
+                        lugarBorrado = LugaresDAO.borrarLugar(idLugarABorrar);
+                    }catch (Exception e) {
+                        System.out.println("Error: Lugar no borrado: "+ e.getMessage());
+                    }
+                    if (lugarBorrado){
+                        System.out.println("Lugar borrado correctamente.");
+                    } else {
+                        System.out.println("LUGAR NO ELIMINADO: no se ha encontrado un lugar con el ID: "+idLugarABorrar);
+                    }
+                    break;
+
+                case 9:
+                    System.out.println("Introduce el registro del autobus para la ruta a insertar: ");
+                    sc.nextLine();
+                    String registroRuta = sc.nextLine();
+
+                    System.out.println("Introduce el número de conductor para la ruta a insertar: ");
+                    if (!sc.hasNextInt()){
+                        System.out.println("Introduce un número de conductor válido.");
+                        sc.next();
+                        break;
+                    }
+                    int numConductorRuta = sc.nextInt();
+
+                    System.out.println("Introduce el ID del lugar para la ruta a insertar: ");
+                    if (!sc.hasNextInt()){
+                        System.out.println("Introduce un número de lugar válido.");
+                        sc.next();
+                        break;
+                    }
+                    int idLugarRuta = sc.nextInt();
+
+                    System.out.println("Introduce el día de la semana para la ruta a insertar: ");
+                    sc.nextLine();
+                    String diaSemanaRuta = sc.nextLine();
+
+                    BDP rutaInsertar = new BDP(registroRuta, numConductorRuta, idLugarRuta, diaSemanaRuta);
+
+                    try{
+                        BDP rutaInsertada = BDPDAO.insertarRuta(rutaInsertar);
+                    } catch (Exception e) {
+                        System.out.println("Error al insertar la ruta: " + e.getMessage());
+                        break;
+                    }
+
+                    if (rutaInsertar != null){
+                        System.out.println("Ruta insertada correctamente: "+rutaInsertar);
+                    } else {
+                        System.out.println("Error al insertar la ruta.");
+                    }
+
+                    break;
+
+                case 10:
+                    System.out.println("Introduce el número de conductor de la ruta a eliminar: ");
+                    if (!sc.hasNextInt()){
+                        System.out.println("Introduce un número de conductor válido.");
+                        sc.next();
+                        break;
+                    }
+                    int numConductorRutaBorrar = sc.nextInt();
+
+                    System.out.println("Introduce el ID del lugar de la ruta a eliminar: ");
+                    if(!sc.hasNextInt()){
+                        System.out.println("Introduce un número de lugar válido.");
+                        sc.next();
+                        break;
+                    }
+                    int idLugarRutaBorrar = sc.nextInt();
+
+                    System.out.println("Introduce el registro del autobus que recorre la ruta a eliminar: ");
+                    sc.nextLine();
+                    String registroRutaBorrar = sc.nextLine();
+
+                    boolean rutaBorrada = false;
+                    try{
+                        rutaBorrada = BDPDAO.borrarRuta(numConductorRutaBorrar, idLugarRutaBorrar, registroRutaBorrar);
+                    } catch (Exception e) {
+                        System.out.println("Error al borrar la ruta: " + e.getMessage());
+                    }
+
+                    if (rutaBorrada){
+                        System.out.println("Ruta borrada correctamente.");
+                    } else {
+                        System.out.println("RUTA NO ELIMINADA: no se ha encontrado una ruta con el número de conductor: "+numConductorRutaBorrar+", ID de lugar: "+idLugarRutaBorrar+" y registro de autobus: "+registroRutaBorrar);
+                    }
+
+                    break;
+
+                case 11:
+                    System.out.println("Introduce ");
+                break;
+
                 default:
                     System.out.println("Introduce una opción válida.");
                     break;
             }
 
         } while (op != 0);
-    }
-
-    // Cambio realizado: eliminada la llamada directa a ConexionBBDD en este método.
-    // Si necesitas ejecutar consultas arbitrarias, es mejor implementar métodos
-    // en la clase ConexionBBDD o en el DAO. Se conserva el método vacío por si
-    // quieres añadir lógica de prueba más tarde.
-    private static void consultarConductor() {
-
-        // Antes: conexionBBDD.consultarBBDD("select * from CONDUCTOR");
-
-        ArrayList<Conductor> conductors = new ArrayList<>();
-
-//        try {
-//
-//        }
-
     }
 }

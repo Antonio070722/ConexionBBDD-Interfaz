@@ -2,11 +2,11 @@ package model;
 
 public class Lugar {
     private int IdLugar;
-    private String site;
     private String cp;
     private String ciudad;
+    private String site;
 
-    public Lugar(int IdLugar, String site, String cp, String ciudad) {
+    public Lugar(int IdLugar, String cp, String ciudad, String site) {
         this.IdLugar = IdLugar;
         this.site = site;
         this.cp = cp;

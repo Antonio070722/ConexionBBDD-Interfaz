@@ -40,5 +40,45 @@ public class LugaresDAO {
         }
 
     }
+
+    public static Lugar insertarLugar(Lugar lugarinsert){
+        String sql = "INSERT INTO LUGARES (IdLugar, cp, ciudad, site) VALUES (?,?,?,?)";
+
+        try(Connection con = ConexionBBDD.getConexion();
+        PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(1, lugarinsert.getIdLugar());
+            ps.setString(2, lugarinsert.getCp());
+            ps.setString(3, lugarinsert.getCiudad());
+            ps.setString(4, lugarinsert.getSite());
+
+            int filasInsert=ps.executeUpdate();
+
+            if (filasInsert == 0){
+                return null;
+            }else {
+                return lugarinsert;
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static boolean borrarLugar(int idLugar){
+        String sql = "DELETE FROM LUGARES WHERE IdLugar = ?";
+
+        try(Connection con = ConexionBBDD.getConexion();
+        PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(1, idLugar);
+            int filasBorradas = ps.executeUpdate();
+
+            if (filasBorradas == 0){
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
 
