@@ -8,6 +8,7 @@ import model.BDP;
 import model.Bus;
 import model.Conductor;
 import model.Lugar;
+import view.PrincipalView;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -17,7 +18,8 @@ public class Principal {
     public static void main(String[] args) {
 
 
-
+        PrincipalView principalView = new PrincipalView();
+        principalView.setVisible(true);
 
 
         //        DriverView vistaConductor = new DriverView();
